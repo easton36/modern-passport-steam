@@ -1,4 +1,3 @@
-const axios = require('axios');
 const assert = require('assert');
 const SteamID = require('steamid');
 
@@ -9,7 +8,7 @@ const { REQUIRED_PARAMS, REQUIRED_SIGNED_PARAMS } = require('./constants');
  * @param {String} realm - The realm to canonicalize
  * @returns {String} The canonicalized realm
  */
-function canonicalizeRealm(realm){
+function canonicalizeRealm(realm) {
 	const match = realm.match(/^(https?:\/\/[^:/]+)/);
 	assert(match, `"${realm}" does not appear to be a valid realm`);
 
@@ -22,7 +21,7 @@ function canonicalizeRealm(realm){
  * @param {String} returnUrl - The URL to return to after authentication
  * @returns {String} The built authentication URL
  */
-function buildAuthUrl(realm, returnUrl){
+function buildAuthUrl(realm, returnUrl) {
 	const query = {
 		'openid.claimed_id': 'http://specs.openid.net/auth/2.0/identifier_select',
 		'openid.identity': 'http://specs.openid.net/auth/2.0/identifier_select',
@@ -41,7 +40,7 @@ function buildAuthUrl(realm, returnUrl){
  * @returns {Object} The built query object
  * @throws {Error} If the query cannot be built or verified
  */
-function buildQuery(parsedUrl){
+function buildQuery(parsedUrl) {
 	const query = {};
 
 	// Ensure all required parameters are present and signed
@@ -70,7 +69,7 @@ function buildQuery(parsedUrl){
  * @param {Object} query - the query object to extract from
  * @returns {String[]} The parsed claimed_id
  */
-function extractClaimedId(query){
+function extractClaimedId(query) {
 	const claimedIdMatch = (query['openid.claimed_id'] || '').match(/^https?:\/\/steamcommunity\.com\/openid\/id\/(\d+)\/?$/);
 
 	return claimedIdMatch;
@@ -83,7 +82,7 @@ function extractClaimedId(query){
  * @returns {Object} The sanitized query
  * @throws {Error} If the query cannot be sanitized
  */
-function sanitizeQuery(query, expectedRealm){
+function sanitizeQuery(query, expectedRealm) {
 	// Set these params here to avoid any potential for malicious user input overwriting them
 	// we will never use `query` after this point
 	const sanitizedQuery = {
@@ -110,7 +109,7 @@ function sanitizeQuery(query, expectedRealm){
  * @param {String} expectedRealm - The expected realm
  * @returns {Object} The extracted and verified parameters
  */
-function extractAndVerifyParams(url, expectedRealm){
+function extractAndVerifyParams(url, expectedRealm) {
 	const parsedUrl = new URL(url);
 
 	const openidMode = parsedUrl.searchParams.get('openid.mode') || '';
@@ -128,26 +127,28 @@ function extractAndVerifyParams(url, expectedRealm){
  * @returns {Promise<Boolean>} Whether the response was valid
  * @throws {Error} If the steam request is invalid
  */
-async function makeSteamRequest(body){
+async function makeSteamRequest(body) {
 	try{
-		const response = await axios({
+		const response = await fetch('https://steamcommunity.com/openid/login', {
 			method: 'POST',
-			url: 'https://steamcommunity.com/openid/login',
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded'
 			},
-			data: new URLSearchParams(body).toString()
+			body: new URLSearchParams(body).toString()
 		});
 
-		const isValid = response?.data?.replace(/\r\n/g, '\n')
+		if(!response.ok) {
+			throw new Error(response.status);
+		}
+
+		const data = await response.text();
+		const isValid = data.replace(/\r\n/g, '\n')
 			.split('\n')
 			.some(line => line === 'is_valid:true');
 
 		return isValid;
-	} catch(err){
-		const statusCode = err.response?.status;
-
-		throw new Error(`HTTP error ${statusCode} when validating response`);
+	} catch(err) {
+		throw new Error(`HTTP error ${err.message} when validating response`);
 	}
 }
 
@@ -157,7 +158,7 @@ async function makeSteamRequest(body){
  * @param {String} expectedRealm - The expected realm
  * @returns {Promise<Object>} The SteamID that logged in
  */
-async function verifyLogin(url, expectedRealm){
+async function verifyLogin(url, expectedRealm) {
 	const query = extractAndVerifyParams(url, expectedRealm);
 	assert(query, 'Failed to extract and verify parameters');
 

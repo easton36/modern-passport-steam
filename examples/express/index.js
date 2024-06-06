@@ -21,13 +21,13 @@ passport.use(new SteamStrategy({
 	done(null, user);
 }));
 
-function authenticateMiddleware(req, res, next){
+function authenticateMiddleware(req, res, next) {
 	passport.authenticate('steam', { session: false }, (err, user, info) => {
-		if(err){
+		if(err) {
 			// Handle errors like exceptions thrown in strategy
 			return res.status(500).json({ error: err?.message || err });
 		}
-		if(!user){
+		if(!user) {
 			// Handle authentication failure
 			return res.status(401).json({ error: info.message || 'Authentication failed' });
 		}
@@ -41,7 +41,7 @@ app.use(passport.initialize());
 
 app.get(LOGIN_ROUTE, passport.authenticate('steam', { session: false }));
 
-app.get(`${LOGIN_ROUTE}/return`, authenticateMiddleware, function(req, res){
+app.get(`${LOGIN_ROUTE}/return`, authenticateMiddleware, function(req, res) {
 	// Successful authentication, redirect home.
 	console.log(`User signed in with SteamID64: ${req.user.id}`);
 

@@ -20,7 +20,7 @@ const {
  *   // do something with the SteamID object
  * });
  */
-class SteamStrategy extends Strategy{
+class SteamStrategy extends Strategy {
 	/**
      * Creates a new `SteamStrategy`.
      * @param {Object} options - The options for the strategy.
@@ -28,7 +28,7 @@ class SteamStrategy extends Strategy{
      * @param {string} options.returnUrl - The return URL for the strategy.
      * @param {Function} verify - The verify callback.
      */
-	constructor(options, verify){
+	constructor(options, verify) {
 		super();
 		this.name = 'steam';
 
@@ -42,8 +42,8 @@ class SteamStrategy extends Strategy{
 	 * @param {Object} req - The express request object
 	 * @returns {Promise<void>}
 	 */
-	async authenticate(req, options){
-		if(req.query && req.query['openid.mode']){
+	async authenticate(req, options) {
+		if(req.query && req.query['openid.mode']) {
 			try{
 				// we only care about the query params, so hostname doesnt matter
 				const fullUrl = 'https://example/com' + req.url;
@@ -51,13 +51,13 @@ class SteamStrategy extends Strategy{
 				assert(userSteamId, 'Steam validation failed');
 
 				this._verify(req, userSteamId, (err, user) => {
-					if(err){
+					if(err) {
 						return this.error(err);
 					}
 
 					return this.success(user);
 				});
-			} catch(err){
+			} catch(err) {
 				return this.fail(err);
 			}
 		} else{

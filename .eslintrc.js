@@ -51,7 +51,7 @@ module.exports = {
 				finally: { before: true, after: false }
 			}
 		}],
-		'space-before-blocks': [2, 'never'],
+		'space-before-blocks': [2, 'always'],
 		'newline-before-return': 2,
 		'eol-last': [2, 'never'],
 		indent: ['error', 'tab'],
