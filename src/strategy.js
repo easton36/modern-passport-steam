@@ -31,6 +31,7 @@ class SteamStrategy extends Strategy{
 	constructor(options, verify){
 		super();
 		this.name = 'steam';
+
 		this._verify = verify;
 		this._realm = canonicalizeRealm(options.realm);
 		this._returnUrl = options.returnUrl;
@@ -41,10 +42,12 @@ class SteamStrategy extends Strategy{
 	 * @param {Object} req - The express request object
 	 * @returns {Promise<void>}
 	 */
-	async authenticate(req){
+	async authenticate(req, options){
 		if(req.query && req.query['openid.mode']){
 			try{
-				const userSteamId = await verifyLogin(req.url, this._realm);
+				// we only care about the query params, so hostname doesnt matter
+				const fullUrl = 'https://example/com' + req.url;
+				const userSteamId = await verifyLogin(fullUrl, this._realm);
 				assert(userSteamId, 'Steam validation failed');
 
 				this._verify(req, userSteamId, (err, user) => {
@@ -59,6 +62,7 @@ class SteamStrategy extends Strategy{
 			}
 		} else{
 			const authUrl = buildAuthUrl(this._realm, this._returnUrl);
+
 			this.redirect(authUrl);
 		}
 	}

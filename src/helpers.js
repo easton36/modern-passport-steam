@@ -46,7 +46,7 @@ function buildQuery(parsedUrl){
 
 	// Ensure all required parameters are present and signed
 	REQUIRED_PARAMS.forEach(param => {
-		assert(parsedUrl.searchParams.has(`openid.${param}`), `No "${param}" parameter is present in the URL`);
+		assert(parsedUrl.searchParams.has(param), `No "${param}" parameter is present in the URL`);
 
 		query[param] = parsedUrl.searchParams.get(param);
 	});
@@ -139,9 +139,14 @@ async function makeSteamRequest(body){
 			data: new URLSearchParams(body).toString()
 		});
 
-		return response?.data?.is_valid === true;
+		const isValid = response?.data?.replace(/\r\n/g, '\n')
+			.split('\n')
+			.some(line => line === 'is_valid:true');
+
+		return isValid;
 	} catch(err){
 		const statusCode = err.response?.status;
+
 		throw new Error(`HTTP error ${statusCode} when validating response`);
 	}
 }
