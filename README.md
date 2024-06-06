@@ -11,6 +11,12 @@ $ npm install --save modern-passport-steam
 
 ## Usage
 
+#### Require Strategy
+
+```js
+const SteamStrategy = require('modern-passport-steam');
+```
+
 #### Configure Strategy
 
 ```js
@@ -25,7 +31,8 @@ passport.use(new SteamStrategy({
 	};
 
 	done(null, user);
-}));```
+}));
+```
 
 #### Authenticate Requests
 
