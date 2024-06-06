@@ -11,7 +11,7 @@ const LOGIN_ROUTE = '/login';
 passport.use(new SteamStrategy({
 	realm: `${HOST}:${PORT}`,
 	returnUrl: `${HOST}:${PORT}${LOGIN_ROUTE}/return`
-}, (req, SteamID, done) => {
+}, (SteamID, done) => {
 	// Here you would look up the user in your database using the SteamID
 	// For this example, we're just passing the SteamID64 back as the user id
 	const user = {

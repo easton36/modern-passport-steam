@@ -50,7 +50,7 @@ class SteamStrategy extends Strategy {
 				const userSteamId = await verifyLogin(fullUrl, this._realm);
 				assert(userSteamId, 'Steam validation failed');
 
-				this._verify(req, userSteamId, (err, user) => {
+				this._verify(userSteamId, (err, user) => {
 					if(err) {
 						return this.error(err);
 					}
