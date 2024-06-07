@@ -22,7 +22,7 @@ const SteamStrategy = require('modern-passport-steam');
 ```js
 passport.use(new SteamStrategy({
 	returnURL: 'http://localhost:3000/login/return',
-    realm: 'http://localhost:3000/',
+	realm: 'http://localhost:3000/',
 }, (SteamID, done) => {
 	// Here you would look up the user in your database using the SteamID
 	// For this example, we're just passing the SteamID64 back as the user id
@@ -41,15 +41,14 @@ Use `passport.authenticate()`, specifying the `'steam'` strategy, to authenticat
 For example, as route middleware in an [Express](http://expressjs.com/) application:
 
 ```js
-app.get('/login',
-	passport.authenticate('steam'));
+app.get('/login', passport.authenticate('steam'));
 
-app.get('/login/return', 
-	passport.authenticate('steam', { failureRedirect: '/login' }),
-	(req, res) => {
-		// Successful authentication, redirect home.
-		res.redirect('/');
-	});
+app.get('/login/return', passport.authenticate('steam', {
+	failureRedirect: '/login'
+}), (req, res) => {
+	// Successful authentication, redirect home.
+	res.redirect('/');
+});
 ```
 
 ## Examples
