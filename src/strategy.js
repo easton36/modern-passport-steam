@@ -32,6 +32,13 @@ class SteamStrategy extends Strategy {
 		super();
 		this.name = 'steam';
 
+		if(!options.realm) {
+			throw new Error('OpenID realm is required');
+		}
+		if(!options.returnUrl) {
+			throw new Error('OpenID return URL is required');
+		}
+
 		this._verify = verify;
 		this._realm = canonicalizeRealm(options.realm);
 		this._returnUrl = options.returnUrl;
