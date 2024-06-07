@@ -1,4 +1,4 @@
-# modern-steam-passport
+# Modern Steam OpenID strategy for Passport
 
 A modern [Passport](https://github.com/jaredhanson/passport) strategy for authenticating
 with [Steam](http://steamcommunity.com/) using OpenID 2.0. Inspired by the original [passport-steam](https://raw.githubusercontent.com/liamcurry/passport-steam) strategy, and DoctorMcKay's [node-steam-signin](https://github.com/DoctorMcKay/node-steam-signin) library.
