@@ -16,7 +16,7 @@ const {
  * const strategy = new SteamStrategy({
  *   realm: 'http://yourdomain.com/',
  *   returnUrl: 'http://yourdomain.com/auth/steam/return'
- * }, (req, SteamID, done) => {
+ * }, (SteamID, done) => {
  *   // do something with the SteamID object
  * });
  */
@@ -26,7 +26,7 @@ class SteamStrategy extends Strategy {
      * @param {Object} options - The options for the strategy.
      * @param {string} options.realm - The realm for the strategy.
      * @param {string} options.returnUrl - The return URL for the strategy.
-     * @param {Function} verify - The verify callback.
+     * @param {Function} verify - The verification function for the strategy.
      */
 	constructor(options, verify) {
 		super();
