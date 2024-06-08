@@ -73,10 +73,7 @@ Without Profile Fetching:
 ```js
 passport.use(new SteamStrategy({
 	returnUrl: 'http://localhost:3000/login/return',
-	realm: 'http://localhost:3000/',
-	fetchSteamLevel: true,
-	fetchUserProfile: true,
-	apiKey: false
+	realm: 'http://localhost:3000/'
 }, (SteamID, done) => {
 	// Here you would look up the user in your database using the SteamID
 	// For this example, we're just passing the SteamID64 back as the user id
