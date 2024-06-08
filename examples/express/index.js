@@ -10,17 +10,30 @@ const LOGIN_ROUTE = '/login';
 
 passport.use(new SteamStrategy({
 	realm: `${HOST}:${PORT}`,
-	returnUrl: `${HOST}:${PORT}${LOGIN_ROUTE}/return`
-}, (SteamID, done) => {
+	returnUrl: `${HOST}:${PORT}${LOGIN_ROUTE}/return`,
+	fetchSteamLevel: true,
+	fetchUserProfile: true,
+	apiKey: () => {
+		// You should return your Steam API key here
+		// For security, you should use environment variables or a secure key management service
+		// Can be a string or a function that returns a string
+		// Can be async if you need to fetch the key from a remote service!
+
+		return 'YOUR_STEAM_API_KEY_HERE';
+	}
+}, (user, done) => {
 	// Here you would look up the user in your database using the SteamID
-	// For this example, we're just passing the SteamID64 back as the user id
-	const user = {
-		id: SteamID.getSteamID64()
-	};
+	// For this example, we're just passing the full user object back
 
 	done(null, user);
 }));
 
+/**
+ * Middleware to authenticate a user with Steam
+ * @param {Request} req - The request object
+ * @param {Response} res - The response object
+ * @param {Function} next - The next function
+ */
 function authenticateMiddleware(req, res, next) {
 	passport.authenticate('steam', { session: false }, (err, user, info) => {
 		if(err) {
@@ -42,10 +55,13 @@ app.use(passport.initialize());
 app.get(LOGIN_ROUTE, passport.authenticate('steam', { session: false }));
 
 app.get(`${LOGIN_ROUTE}/return`, authenticateMiddleware, function(req, res) {
+	const personaname = req.user?.profile?.personaname;
+	const steamid = req.user?.profile?.steamid;
+	const avatarfull = req.user?.profile?.avatarfull;
 	// Successful authentication, redirect home.
-	console.log(`User signed in with SteamID64: ${req.user.id}`);
+	console.log(`User signed in with SteamID64: ${steamid}`);
 
-	return res.send(`Logged in! Your SteamID64 is: ${req.user.id}`);
+	return res.send(`Welcome, ${personaname}! Your Steam ID is: ${steamid}. <br /> <img src="${avatarfull}" alt="Your avatar">`);
 });
 
 app.listen(PORT, () => {

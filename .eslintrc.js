@@ -7,11 +7,13 @@ module.exports = {
 	extends: [
 		'standard',
 		'plugin:security/recommended',
-		'plugin:require-path-exists/recommended'
+		'plugin:require-path-exists/recommended',
+		'plugin:jsdoc/recommended'
 	],
 	plugins: [
 		'security',
-		'require-path-exists'
+		'require-path-exists',
+		'jsdoc'
 	],
 	overrides: [
 	],
@@ -70,7 +72,8 @@ module.exports = {
 		'security/detect-object-injection': 0,
 		'max-params': ['error', 4],
 		'no-new': 0,
-		'no-param-reassign': ['error', { props: false }]
+		'no-param-reassign': ['error', { props: false }],
+		'jsdoc/no-defaults': 0
 	}
 };
 

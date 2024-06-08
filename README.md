@@ -19,10 +19,64 @@ const SteamStrategy = require('modern-passport-steam');
 
 #### Configure Strategy
 
+If you want to fetch the user's Steam level and profile, you will need to provide a Steam API key. You can get one [here](https://steamcommunity.com/dev/apikey).
+If you do not pass an api key, the first parameter passed to the verify callback will be the SteamID object, as you can see in the examples below.
+
+With Profile Fetching:
 ```js
 passport.use(new SteamStrategy({
 	returnUrl: 'http://localhost:3000/login/return',
 	realm: 'http://localhost:3000/',
+	fetchSteamLevel: true,
+	fetchUserProfile: true,
+	apiKey: () => {
+		// You should return your Steam API key here
+		// For security, you should use environment variables or a secure key management service
+		// Can be a string or a function that returns a string
+		// Can be async if you need to fetch the key from a remote service!
+		return 'MY_STEAM_API_KEY';
+	}
+}, (user, done) => {
+	// Here you would look up the user in your database using the SteamID
+	// For this example, we're just passing the full user object back
+
+	done(null, user);
+}));
+```
+
+Example user object if you pass an API key:
+```js
+{
+  SteamID: SteamID { universe: 1, type: 1, instance: 1, accountid: 893472231 },
+  profile: {
+    steamid: '76561198853737959',
+    communityvisibilitystate: 3,
+    profilestate: 1,
+    personaname: 'sampli',
+    commentpermission: 1,
+    profileurl: 'https://steamcommunity.com/id/shamp/',
+    avatar: 'https://avatars.steamstatic.com/979e4a6baa364403e1dc268a52034162044ae391.jpg',
+    avatarmedium: 'https://avatars.steamstatic.com/979e4a6baa364403e1dc268a52034162044ae391_medium.jpg',
+    avatarfull: 'https://avatars.steamstatic.com/979e4a6baa364403e1dc268a52034162044ae391_full.jpg',
+    avatarhash: '979e4a6baa364403e1dc268a52034162044ae391',
+    lastlogoff: 1716699862,
+    personastate: 0,
+    primaryclanid: '103582791429521408',
+    timecreated: 1534350460,
+    personastateflags: 0
+  },
+  level: 52
+}
+```
+
+Without Profile Fetching:
+```js
+passport.use(new SteamStrategy({
+	returnUrl: 'http://localhost:3000/login/return',
+	realm: 'http://localhost:3000/',
+	fetchSteamLevel: true,
+	fetchUserProfile: true,
+	apiKey: false
 }, (SteamID, done) => {
 	// Here you would look up the user in your database using the SteamID
 	// For this example, we're just passing the SteamID64 back as the user id
