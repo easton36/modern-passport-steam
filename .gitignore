@@ -1,3 +1,5 @@
+examples/express/node_modules/
+
 # Logs
 logs
 *.log
