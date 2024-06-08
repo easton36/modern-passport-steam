@@ -6,12 +6,12 @@ const assert = require('assert');
  * @returns {Promise<string|object>} - response data
  */
 const returnFetchResponse = async (response) => {
-	const contentType = response.headers.get("content-type");
-	if (contentType && contentType.indexOf("application/json") !== -1) {
+	const contentType = response.headers.get('content-type');
+	if(contentType && contentType.indexOf('application/json') !== -1) {
 		return await response.json();
-	} else {
+	} else{
 		const text = await response.text();
-		if(text?.includes('Access is denied.')){
+		if(text?.includes('Access is denied.')) {
 			throw new Error('Steam API key is invalid');
 		}
 
@@ -30,7 +30,7 @@ const fetchSteamLevel = async (steamId, apiKey) => {
 	const data = await returnFetchResponse(response);
 
 	const playerLevel = data?.response?.player_level;
-	assert(playerLevel, 'Steam profile is probably private');
+	assert(typeof playerLevel === 'number', 'There was an error fetching your steam level.');
 
 	return playerLevel || 0;
 };

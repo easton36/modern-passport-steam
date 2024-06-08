@@ -9,6 +9,39 @@ with [Steam](http://steamcommunity.com/) using OpenID 2.0. Inspired by the origi
 $ npm install --save modern-passport-steam
 ```
 
+## Contents
+
+- [Options](#options)
+- [Usage](#usage)
+- [Examples](#examples)
+
+## Options
+
+This strategy takes an options object with the following properties:
+
+- `returnUrl` - The URL to which Steam will redirect the user after authentication. This should be the URL of the route that calls `passport.authenticate('steam')`.
+- `realm` - The URL to which Steam will redirect the user after authentication. This should be the root URL of your website.
+- `fetchSteamLevel` - Whether or not to fetch the user's Steam level. Defaults to `true` if an API key is provided.
+- `fetchUserProfile` - Whether or not to fetch the user's profile. Defaults to `true` if an API key is provided.
+- `apiKey` - A Steam API key to use for fetching the user's Steam level and profile. Can be a string or a function that returns a string. Can be async if you need to fetch the key from a remote service!
+
+Example options object:
+```js
+{
+	returnUrl: 'http://localhost:3000/login/return',
+	realm: 'http://localhost:3000/',
+	fetchSteamLevel: true, // Defaults to true if an API key is provided
+	fetchUserProfile: true, // Defaults to true if an API key is provided
+	apiKey: () => {
+		// You should return your Steam API key here
+		// For security, you should use environment variables or a secure key management service
+		// Can be a string or a function that returns a string
+		// Can be async if you need to fetch the key from a remote service!
+		return 'MY_STEAM_API_KEY';
+	}
+}
+```
+
 ## Usage
 
 #### Require Strategy

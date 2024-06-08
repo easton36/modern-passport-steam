@@ -1,6 +1,6 @@
 {
 	"name": "modern-passport-steam",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"description": "A modern passport strategy for steam with hopefully no bugs!",
 	"main": "src/index.js",
 	"keywords": [
