@@ -37,6 +37,7 @@ passport.use(new SteamStrategy({
 function authenticateMiddleware(req, res, next) {
 	passport.authenticate('steam', { session: false }, (err, user, info) => {
 		if(err) {
+			console.error('Error authenticating user:', err);
 			// Handle errors like exceptions thrown in strategy
 			return res.status(500).json({ error: err?.message || err });
 		}
