@@ -38,27 +38,33 @@ class SteamStrategy extends Strategy {
 	 * @param {string} options.realm - The realm for the strategy.
 	 * @param {string} options.returnUrl - The return URL for the strategy.
 	 * @param {string | Function} options.apiKey - The Steam API key to use for fetching user data.
-	 * @param {boolean} [options.fetchUserProfile=true] - Whether to fetch the user's profile.
-	 * @param {boolean} [options.fetchSteamLevel=true] - Whether to fetch the user's steam level.
+	 * @param {boolean} [options.fetchUserProfile=true] - Whether to fetch the user's profile. Default is `true`.
+	 * @param {boolean} [options.fetchSteamLevel=false] - Whether to fetch the user's steam level. Default is `false`.
 	 * @param {Function} verify - The verification function for the strategy.
 	 */
 	constructor(options, verify) {
 		super();
 		this.name = 'steam';
 
-		if(!options.realm) {
-			throw new Error('OpenID realm is required');
-		}
-		if(!options.returnUrl) {
-			throw new Error('OpenID return URL is required');
-		}
-
 		this._verify = verify;
 		this._realm = canonicalizeRealm(options.realm);
 		this._returnUrl = options.returnUrl;
 		this._apiKey = options.apiKey;
 		this._fetchUserProfile = options.fetchUserProfile ?? true;
-		this._fetchSteamLevel = options.fetchSteamLevel ?? true;
+		this._fetchSteamLevel = options.fetchSteamLevel ?? false;
+
+		if(!this._returnUrl) {
+			throw new Error('OpenID realm is required');
+		}
+		if(!this._returnUrl) {
+			throw new Error('OpenID return URL is required');
+		}
+		// If _fetchUserProfile is false then we dont need to check for API key
+		if((this._fetchUserProfile || this._fetchSteamLevel) && !this._apiKey) {
+			throw new Error('Steam API key is required to fetch user data. Set fetchUserProfile to false if you do not want to include a Steam API key');
+		}
+
+		
 	}
 
 	/**
