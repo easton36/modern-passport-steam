@@ -5,8 +5,8 @@ const { REQUIRED_PARAMS, REQUIRED_SIGNED_PARAMS } = require('./constants');
 
 /**
  * Canonicalizes a realm URL
- * @param {String} realm - The realm to canonicalize
- * @returns {String} The canonicalized realm
+ * @param {string} realm - The realm to canonicalize
+ * @returns {string} The canonicalized realm
  */
 function canonicalizeRealm(realm) {
 	const match = realm.match(/^(https?:\/\/[^:/]+)/);
@@ -17,9 +17,9 @@ function canonicalizeRealm(realm) {
 
 /**
  * Builds an authentication URL for Steam OpenID
- * @param {String} realm - The realm to build the auth URL for
- * @param {String} returnUrl - The URL to return to after authentication
- * @returns {String} The built authentication URL
+ * @param {string} realm - The realm to build the auth URL for
+ * @param {string} returnUrl - The URL to return to after authentication
+ * @returns {string} The built authentication URL
  */
 function buildAuthUrl(realm, returnUrl) {
 	const query = {
@@ -37,7 +37,7 @@ function buildAuthUrl(realm, returnUrl) {
 /**
  * Builds the query object from parsed URL
  * @param {URL} parsedUrl - The parsed URL object
- * @returns {Object} The built query object
+ * @returns {object} The built query object
  * @throws {Error} If the query cannot be built or verified
  */
 function buildQuery(parsedUrl) {
@@ -66,8 +66,8 @@ function buildQuery(parsedUrl) {
 
 /**
  * Get claimed_id value from query
- * @param {Object} query - the query object to extract from
- * @returns {String[]} The parsed claimed_id
+ * @param {object} query - the query object to extract from
+ * @returns {string[]} The parsed claimed_id
  */
 function extractClaimedId(query) {
 	const claimedIdMatch = (query['openid.claimed_id'] || '').match(/^https?:\/\/steamcommunity\.com\/openid\/id\/(\d+)\/?$/);
@@ -77,9 +77,9 @@ function extractClaimedId(query) {
 
 /**
  * Sanitizes the query
- * @param {Object} query - The query object to sanitize
- * @param {String} expectedRealm - The expected realm
- * @returns {Object} The sanitized query
+ * @param {object} query - The query object to sanitize
+ * @param {string} expectedRealm - The expected realm
+ * @returns {object} The sanitized query
  * @throws {Error} If the query cannot be sanitized
  */
 function sanitizeQuery(query, expectedRealm) {
@@ -105,9 +105,9 @@ function sanitizeQuery(query, expectedRealm) {
 
 /**
  * Extracts and verifies parameters from a URL
- * @param {String} url - The URL to extract and verify parameters from
- * @param {String} expectedRealm - The expected realm
- * @returns {Object} The extracted and verified parameters
+ * @param {string} url - The URL to extract and verify parameters from
+ * @param {string} expectedRealm - The expected realm
+ * @returns {object} The extracted and verified parameters
  */
 function extractAndVerifyParams(url, expectedRealm) {
 	const parsedUrl = new URL(url);
@@ -123,8 +123,8 @@ function extractAndVerifyParams(url, expectedRealm) {
 
 /**
  * Makes a request to Steam to verify a login response
- * @param {Object} body - The body to send to Steam
- * @returns {Promise<Boolean>} Whether the response was valid
+ * @param {object} body - The body to send to Steam
+ * @returns {Promise<boolean>} Whether the response was valid
  * @throws {Error} If the steam request is invalid
  */
 async function makeSteamRequest(body) {
@@ -154,9 +154,9 @@ async function makeSteamRequest(body) {
 
 /**
  * Verifies a login response from Steam
- * @param {String} url - The URL to verify
- * @param {String} expectedRealm - The expected realm
- * @returns {Promise<Object>} The SteamID that logged in
+ * @param {string} url - The URL to verify
+ * @param {string} expectedRealm - The expected realm
+ * @returns {Promise<object>} The SteamID that logged in
  */
 async function verifyLogin(url, expectedRealm) {
 	const query = extractAndVerifyParams(url, expectedRealm);
