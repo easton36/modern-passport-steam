@@ -100,30 +100,30 @@ class SteamStrategy extends Strategy {
 	 * @returns {Promise<void>}
 	 */
 	async authenticate(req) {
-		if(req.query && req.query['openid.mode']) {
-			try{
-				// we only care about the query params, so hostname doesnt matter
-				const fullUrl = 'https://example/com' + req.url;
-				const userSteamId = await verifyLogin(fullUrl, this._realm);
-				assert(userSteamId, 'Steam validation failed');
-
-				// Fetch the user's profile and steam level
-				const user = await this.fetchUserData(userSteamId);
-
-				this._verify(user, (err, user) => {
-					if(err) {
-						return this.error(err);
-					}
-
-					return this.success(user);
-				});
-			} catch(err) {
-				return this.fail(err);
-			}
-		} else{
+		if(!req.query || !req.query['openid.mode']) {
 			const authUrl = buildAuthUrl(this._realm, this._returnUrl);
 
-			this.redirect(authUrl);
+			return this.redirect(authUrl);
+		}
+
+		try{
+			// we only care about the query params, so hostname doesnt matter
+			const fullUrl = 'https://example.com' + req.url;
+			const userSteamId = await verifyLogin(fullUrl, this._realm);
+			assert(userSteamId, 'Steam validation failed');
+
+			// Fetch the user's profile and steam level
+			const user = await this.fetchUserData(userSteamId);
+
+			this._verify(user, (err, user) => {
+				if(err) {
+					return this.error(err);
+				}
+
+				return this.success(user);
+			});
+		} catch(err) {
+			return this.fail(err);
 		}
 	}
 }

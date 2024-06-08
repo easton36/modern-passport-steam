@@ -59,10 +59,11 @@ app.get(`${LOGIN_ROUTE}/return`, authenticateMiddleware, function(req, res) {
 	const personaname = req.user?.profile?.personaname;
 	const steamid = req.user?.profile?.steamid;
 	const avatarfull = req.user?.profile?.avatarfull;
+	const level = req.user?.level;
 	// Successful authentication, redirect home.
 	console.log(`User signed in with SteamID64: ${steamid}`);
 
-	return res.send(`Welcome, ${personaname}! Your Steam ID is: ${steamid}. <br /> <img src="${avatarfull}" alt="Your avatar">`);
+	return res.send(`Welcome, ${personaname}! Your Steam ID is: ${steamid}. Your Steam level is: ${level}. <br /> <img src="${avatarfull}" alt="Your avatar">`);
 });
 
 app.listen(PORT, () => {
