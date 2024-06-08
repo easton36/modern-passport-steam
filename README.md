@@ -21,7 +21,7 @@ const SteamStrategy = require('modern-passport-steam');
 
 ```js
 passport.use(new SteamStrategy({
-	returnURL: 'http://localhost:3000/login/return',
+	returnUrl: 'http://localhost:3000/login/return',
 	realm: 'http://localhost:3000/',
 }, (SteamID, done) => {
 	// Here you would look up the user in your database using the SteamID
