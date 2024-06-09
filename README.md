@@ -3,6 +3,8 @@
 A modern [Passport](https://github.com/jaredhanson/passport) strategy for authenticating
 with [Steam](http://steamcommunity.com/) using OpenID 2.0. Inspired by the original [passport-steam](https://github.com/liamcurry/passport-steam/) strategy, and DoctorMcKay's [node-steam-signin](https://github.com/DoctorMcKay/node-steam-signin) library.
 
+There is currently a vulnerability in the original [passport-steam](https://github.com/liamcurry/passport-steam/) library that allows you to authenticate as any steam account.
+
 ## Installation
 
 ```bash
