@@ -53,7 +53,7 @@ class SteamStrategy extends Strategy {
 		this._fetchUserProfile = options.fetchUserProfile ?? true;
 		this._fetchSteamLevel = options.fetchSteamLevel ?? false;
 
-		if(!this._returnUrl) {
+		if(!this._realm) {
 			throw new Error('OpenID realm is required');
 		}
 		if(!this._returnUrl) {
