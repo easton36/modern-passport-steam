@@ -30,7 +30,6 @@ const fetchSteamLevel = async (steamId, apiKey) => {
 	const data = await returnFetchResponse(response);
 
 	const playerLevel = data?.response?.player_level;
-	assert(typeof playerLevel === 'number', 'There was an error fetching your steam level.');
 
 	return playerLevel || 0;
 };
