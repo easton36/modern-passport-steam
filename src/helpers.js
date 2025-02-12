@@ -132,7 +132,9 @@ async function makeSteamRequest(body) {
 		const response = await fetch('https://steamcommunity.com/openid/login', {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded'
+				'Content-Type': 'application/x-www-form-urlencoded',
+				Origin: 'https://steamcommunity.com',
+				Referer: 'https://steamcommunity.com/'
 			},
 			body: new URLSearchParams(body).toString()
 		});
