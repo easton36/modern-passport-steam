@@ -63,8 +63,6 @@ class SteamStrategy extends Strategy {
 		if((this._fetchUserProfile || this._fetchSteamLevel) && !this._apiKey) {
 			throw new Error('Steam API key is required to fetch user data. Set fetchUserProfile to false if you do not want to include a Steam API key');
 		}
-
-		
 	}
 
 	/**

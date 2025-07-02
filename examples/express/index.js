@@ -4,7 +4,7 @@ const SteamStrategy = require('../../src');
 
 const app = express();
 
-const HOST = 'http://localhost';
+const HOST = 'http://computer.local'; // valve has some weird rule that blocks the request when "realm" is localhost or 127.0.0.1
 const PORT = 3000;
 const LOGIN_ROUTE = '/login';
 
@@ -38,6 +38,7 @@ function authenticateMiddleware(req, res, next) {
 	passport.authenticate('steam', { session: false }, (err, user, info) => {
 		if(err) {
 			console.error('Error authenticating user:', err);
+
 			// Handle errors like exceptions thrown in strategy
 			return res.status(500).json({ error: err?.message || err });
 		}

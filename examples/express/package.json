@@ -8,6 +8,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.19.2",
-    "passport": "^0.7.0"
+    "passport": "^0.7.0",
+    "passport-strategy": "^1.0.0"
   }
 }
